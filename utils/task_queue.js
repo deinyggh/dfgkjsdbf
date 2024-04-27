@@ -129,26 +129,14 @@ const queue = async (client, tasks) => {
 				} else {
 					status_string = "Error. Host not initialised for queue.";
 				}
-				let final_embed;
-				if (status_string.includes("Completed")) {
-					final_embed = EmbedBuilder.from(scene_json.final_embed);
-					final_embed
-					.setColor(color)
-					.addFields(
-						{ name: "Status", value: status_string, inline: true },
-						{ name: "Host", value: scene_json.user_host, inline: true },
-						{ name: "Size", value: `${parseInt(file_size / (1024 * 1024))} MB`, inline: true }
-					);
-				} else {
-					final_embed = EmbedBuilder.from(embed)
+				const final_embed = EmbedBuilder.from(embed)
 					.setColor(color)
 					.setFields(
 					{ name: "Status", value: status_string, inline: true },
 					{ name: "Host", value: scene_json.user_host, inline: true },
 					{ name: "Size", value: `${parseInt(file_size / (1024 * 1024))} MB`, inline: true },
 				);
-				}
-				
+								
 				await message.edit({embeds: [final_embed]});
 				await deleteTask(task.task_msg_id);
 				break;
