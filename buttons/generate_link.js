@@ -287,6 +287,9 @@ const quality_selection = async (interaction, scene_json) => {
 				);
 			}
 		}
+		if (rowVid.components.length === 0) {
+			throw new Error('No active links found currently!');
+		}
 	}
 	else{
 		for (let index = 0; index < scene_json.qualityLinks.length; index++) {
