@@ -13,9 +13,9 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
     "discord.js": "^14.14.1",
-    "googleapis": "^135.0.0",
-    "mongoose": "^8.3.1",
-    "megajs": "^1.2.0",
+    "googleapis": "^136.0.0",
+    "mongoose": "^8.3.3",
+    "megajs": "^1.2.1",
     "express": "^4.19.2",
     "stream": "^0.0.2"
   }
