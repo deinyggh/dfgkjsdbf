@@ -104,6 +104,7 @@ const valid_network_check = async (link, host = "Direct Link") => {
 		"porntraveling.com": "wtfpass",
 		//bangbros
 		"bangbros.com": "bangbros",
+		"bangbrosbot.com": "bangbrosbot",
 		"sexselector.com": "bbnetwork",
 		"miakhalifa.com": "bbnetwork",
 		//w4b
@@ -151,6 +152,7 @@ const valid_network_check = async (link, host = "Direct Link") => {
 	};
 	const site_map_ndl = {
 		//bangbros
+		"bangbrosbot.com": "bangbrosbot",
 		"bangbros.com": "pornportal",
 		//naughtyamerica
 		"naughtyamerica.com": "naughtyamerica",
@@ -243,6 +245,7 @@ const generate_link_details = async (url, host = "Direct Link", network = "commo
 			scene_json = await nadinej.Scraper(url);
 		break;
 		case "bangbros":
+		case "bangbrosbot":
 		case "bbnetwork":
 			scene_json = await bangbros.Scraper(url, link_network);
 		break;
