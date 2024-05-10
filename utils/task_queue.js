@@ -3,7 +3,7 @@ import { Readable } from "node:stream";
 import { generate_link_details, host_detail_check, link_finder } from '../buttons/generate_link.js';
 import fileSchema from '../models/fileSchema.js';
 import saSchema from '../models/saSchema.js';
-import { createResponse, listFolders, wait } from '../utils/common_functions.js';
+import { createResponse, wait } from '../utils/common_functions.js';
 import { megajsStreamUpload } from '../utils/meganz.js';
 import { deleteTask, findProfile, listTasks, updateTask } from '../utils/mongodb.js';
 import { storageCheck, uploadStream } from './googleapi.js';
