@@ -12,10 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "discord.js": "^14.14.1",
-    "googleapis": "^136.0.0",
-    "mongoose": "^8.3.3",
-    "megajs": "^1.2.1",
+    "discord.js": "^14.15.2",
+    "googleapis": "^137.1.0",
+    "mongoose": "^8.3.4",
+    "megajs": "^1.2.2",
     "express": "^4.19.2",
     "stream": "^0.0.2"
   }
