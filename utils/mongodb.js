@@ -56,6 +56,10 @@ const deleteTask = async (id) => {
     return await taskSchema.findOneAndDelete({ task_msg_id: id });
 };
 
+const deleteAllTasks = async () => {
+    return await taskSchema.deleteMany({});
+};
+
 export {
-    addTask, createDefaultProfile, deleteTask, findProfile, listTasks, updateData, updateDataCustom, updateTask
+    addTask, createDefaultProfile, deleteTask, findProfile, listTasks, updateData, updateDataCustom, updateTask, deleteAllTasks
 };

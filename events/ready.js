@@ -1,6 +1,6 @@
 import { ActivityType, Events } from 'discord.js';
 import mongoose from 'mongoose';
-import config from '../config.json' assert { type: 'json' };
+import config from '../config.json' with { type: 'json' };
 import { start_queue } from '../utils/task_queue.js';
 
 export default {

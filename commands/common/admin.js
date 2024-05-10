@@ -1,6 +1,6 @@
 import { ActionRowBuilder, EmbedBuilder, ModalBuilder, PermissionFlagsBits, SlashCommandBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import userProfiles from "../../models/userProfiles.js";
-import { createDefaultProfile, findProfile, updateData } from "../../utils/mongodb.js";
+import { createDefaultProfile, deleteAllTasks, findProfile, updateData } from "../../utils/mongodb.js";
 import fs from "node:fs";
 import bangbros from "../../utils/sites/bangbros.js";
 import saSchema from "../../models/saSchema.js";
@@ -15,6 +15,10 @@ const admin_command = new SlashCommandBuilder()
 	.addSubcommand(subcommand => subcommand
 		.setName("bot_settings")
 		.setDescription("Update Bot Settings and Limits")
+	)
+	.addSubcommand(subcommand => subcommand
+		.setName("reset_queue")
+		.setDescription("Reset Task Queue")
 	)
 	.addSubcommandGroup(subcommandGroup => subcommandGroup
 		.setName("update")
@@ -204,6 +208,20 @@ const execute = async (interaction) => {
 					return;
 				}
 				try {await interaction.deleteReply();} catch {}
+			}
+		break;
+
+		case "reset_queue":
+			{
+				try {
+					await interaction.deferReply({ephemeral: true});
+					await deleteAllTasks();
+					await interaction.editReply({content: `All Tasks Removed.`});
+
+                } catch (error) {
+                    console.error(error);
+                    await interaction.editReply({content: `An error occurred.\n\`\`\`${error}\`\`\``});
+                }
 			}
 		break;
 

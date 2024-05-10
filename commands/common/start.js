@@ -19,7 +19,7 @@ const execute = async (interaction) => {
 			.setFooter({text: `Stay Horny, Spread Horny!`, iconURL: 'https://i.imgur.com/htKfpMj.jpeg'})
 			.addFields(
 				{ name: "Link", value: "Enter Supported Link", inline: false },
-				{ name: "Pornportal ID", value: "Enter Pornportal ID or Link", inline: false },
+				// { name: "Pornportal ID", value: "Enter Pornportal ID or Link", inline: false },
 				{ name: "BB Network ID", value: "Enter BB Network ID", inline: false },
 				{ name: "Host Settings", value: "All Host related settings", inline: false },
 				{ name: "Guides and Info", value: "Links to bot guide and information", inline: false },
@@ -52,8 +52,12 @@ const execute = async (interaction) => {
 				.setCustomId("guide")
 				.setDisabled(false)
 				.setStyle(ButtonStyle.Primary),
+			new ButtonBuilder()
+				.setLabel("Bangbros Directory")
+				.setStyle(ButtonStyle.Link)
+				.setURL("https://botbb.mosis.workers.dev/product/1/videos")
 		];
-
+		
 		const select = new StringSelectMenuBuilder()
 			.setCustomId('host_update')
 			.setPlaceholder('Select your Host!')

@@ -1,8 +1,7 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, bold, userMention } from "discord.js";
-import { deleteFile, downloadFile, extractFileId, extractFolderId } from "../utils/common_functions.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, bold } from "discord.js";
+import { deleteFile, extractFileId, extractFolderId } from "../utils/common_functions.js";
 import { deleteAllFiles, deleteOneFile, listAllFiles, storageCheck } from "../utils/googleapi.js";
 import { findProfile, updateData } from "../utils/mongodb.js";
-import fs from "node:fs";
 
 const guides = async (interaction) => {
 	try {
@@ -404,6 +403,7 @@ const host_update = async (interaction) => {
 		await interaction.reply({ content: `Error!\n**\`\`\`${error}\`\`\`**`});
 	}
 }
+
 
 export {
 	guides,
