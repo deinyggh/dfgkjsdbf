@@ -454,7 +454,7 @@ const generate_link = async (interaction) => {
 					scene_json.file_name = `${scene_json.file_name}${scene_json.file_ext}`;
 					scene_json.user_host = user_host_details.defaultHost;
 					try {
-						scene_json.final_embed = final_embed.toJSON();
+						scene_json.final_embed = JSON.stringify(final_embed.toJSON());
 					} catch{}
 					await addTask(interaction.user, message.id, JSON.stringify(scene_json));
 					await submitted.editReply({content: `Task Added -> ${message.url}`, embeds: [final_embed]});
