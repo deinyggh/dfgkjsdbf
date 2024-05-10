@@ -54,7 +54,14 @@ const Scraper = async (link, network) => {
 			throw new Error('Enter valid scene link from bangbros.com!');
 		}
 		transformedLink = `/product/1/movie/${(await pornportal.Scraper((await pornportal.extractNumber(transformedLink)), "scene"))['result']['spartanId']}`
-	} else {
+	} else if (network === 'bangbrosbot') {
+		network = "bangbros";
+		if (!transformedLink.includes("bangbrosbot.com/video")) {
+			throw new Error('Enter valid scene link!');
+		}
+		transformedLink = `/product/1/movie/${(await pornportal.extractNumber(transformedLink))}`
+	}
+	else {
 		transformedLink = await pornportal.extractNumber(link);
 		const database = JSON.parse(await fs.promises.readFile(`./essentials/bbjs.json`, {encoding: "utf-8"}))
 		const results = database.filter(result => result.code.toLowerCase() === link.toLowerCase() || result.id == transformedLink);
@@ -230,6 +237,15 @@ const dbGenerateBase = async (client) => {
 				detailString = `${detailString}${oldResults[0].site.name} - ${newResults.length - oldResults.length}\n`;
 			}
 		}
+		const prevIDs = new Set(oldDB.map(item => item.id));
+
+		// Filter out new entries
+		const newEntries = newDB.filter(entry => !prevIDs.has(entry.id));
+
+		// Convert newEntries to JSON
+		// const newJSONResult = JSON.stringify(newEntries, null, 4);
+
+		// console.log(newJSONResult);
 		mainArray = [];
 		siteArray = [];
 		await msg.edit({ content: `Scraping Bangbros DB Finished`});
