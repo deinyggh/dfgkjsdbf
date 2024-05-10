@@ -68,10 +68,10 @@ const execute = async (interaction) => {
 				// 	.setLabel('G-Drive Shared Drive')
 				// 	.setDescription('Google Drive Shared Drives or Team Drives.')
 				// 	.setValue('G-Drive Shared Drive'),
-				new StringSelectMenuOptionBuilder()
-					.setLabel('G-Drive Personal Folder')
-					.setDescription('Google Drive Personal Folder backed by your own Service Accounts.')
-					.setValue('G-Drive Personal Folder'),
+				// new StringSelectMenuOptionBuilder()
+				// 	.setLabel('G-Drive Personal Folder')
+				// 	.setDescription('Google Drive Personal Folder backed by your own Service Accounts.')
+				// 	.setValue('G-Drive Personal Folder'),
 				new StringSelectMenuOptionBuilder()
 					.setLabel('G-Drive Public SA')
 					.setDescription("Google Drive Personal Folder backed by your bot's Service Accounts.")
