@@ -2,6 +2,7 @@ import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import config from "./config.json"  with { type: 'json' };
 import fs from "node:fs";
 import path from "node:path";
+import keepAlive from "./server.js";
 
 // Create a new client instance
 const client = new Client({ intents: [
@@ -44,5 +45,5 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-
+keepAlive();
 client.login(config.token);
