@@ -35,6 +35,7 @@ const queue = async (client, tasks) => {
 					const new_scene_json = await generate_link_details(scene_json.result?.id ?? scene_json.link, user_profile.userHostDetails.defaultHost, scene_json.link_network);
 					new_scene_json.quality = scene_json.quality;
 					new_scene_json.user_host = scene_json.user_host;
+					new_scene_json.final_embed = scene_json.final_embed;
 					scene_json = await link_finder(new_scene_json);
 				}
 				await host_detail_check(user_profile.userHostDetails);
@@ -64,6 +65,9 @@ const queue = async (client, tasks) => {
 				}
 				const response = await createResponse(scene_json.download_link, {headers: new_headers});
 				const file_size = parseInt(response.headers.get("content-length"));
+				if ((file_size/(1024 * 1024 * 1024)) > 14.96) {
+					throw new Error(`File size limit exceeded! ${parseFloat(file_size/(1024 * 1024 * 1024)).toFixed(2)} GB`);
+				}
 				const stream = Readable.fromWeb(response.body);
 				const edited_embed = EmbedBuilder.from(embed).setFields(
 					{ name: "Status", value: "Processing", inline: true },
