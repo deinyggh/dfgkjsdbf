@@ -256,10 +256,8 @@ const dbGenerateBase = async (client) => {
 		const oldCodes = new Set(old_database.map(entry => entry.code));
 		const new_entries = new_database.filter(entry => !oldCodes.has(entry.code));
 
-		console.log(new_entries.length);
-
-		for (let index = 0; index < new_entries.length; index++) {
-			const data = new_database[index];
+		for (let index = 0; index < new_entries.length; index++) { // change
+			const data = new_entries[index]; // change
 			const scene = await bbScenes.findOne({"code": data.code});
 			if (!scene) {
 				await bbScenes.create({
