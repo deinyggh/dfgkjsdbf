@@ -1,11 +1,12 @@
 import { ActivityType, Events } from 'discord.js';
 import mongoose from 'mongoose';
 import config from '../config.json' with { type: 'json' };
-import { start_queue } from '../utils/task_queue.js';
 import fileSchema from "../models/fileSchema.js";
 import saSchema from "../models/saSchema.js";
-import { deleteOneFile, storageCheck } from '../utils/googleapi.js';
 import { wait } from '../utils/common_functions.js';
+import { deleteOneFile, storageCheck } from '../utils/googleapi.js';
+import bangbros from '../utils/sites/bangbros.js';
+import { start_queue } from '../utils/task_queue.js';
 
 export default {
 	name: Events.ClientReady,
@@ -24,7 +25,7 @@ export default {
 				const diff = targetTime.getTime() - currentTime.getTime();
 				return diff ;
 			}
-			
+
 			while (true) {
 				try {
 					await new Promise(resolve => setTimeout(resolve, getHoursDifference()));
@@ -39,7 +40,7 @@ export default {
 								}],
 								status: 'online'
 							});
-		
+
 							//File Delete
 							const filesToDelete = await fileSchema.find({fileDeleteTime : { $lt: new Date()}});
 							for (let index = 0; index < filesToDelete.length; index++) {
@@ -67,6 +68,9 @@ export default {
 									}
 								});
 							}
+							//BB Update
+							await bangbros.dbGenerateBase(client);
+
 						} catch (error) {
 							console.error(error);
 						}
