@@ -363,8 +363,8 @@ const execute = async (interaction) => {
 			{
 				try {
 					await interaction.deferReply({ephemeral: true});
+                    await interaction.editReply({content: `Check Status in Log Channel`});
                     await bangbros.dbGenerateBase(interaction.client);
-                    await interaction.editReply({content: `Finished`});
                 } catch (error) {
                     console.error(error);
                     await interaction.editReply({content: `An error occurred.\n\`\`\`${error}\`\`\``});

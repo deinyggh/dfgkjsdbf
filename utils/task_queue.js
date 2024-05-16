@@ -1,4 +1,4 @@
-import { EmbedBuilder, time } from 'discord.js';
+import { EmbedBuilder, TimestampStyles, time } from 'discord.js';
 import { Readable } from "node:stream";
 import { generate_link_details, host_detail_check, link_finder } from '../buttons/generate_link.js';
 import fileSchema from '../models/fileSchema.js';
@@ -128,7 +128,7 @@ const queue = async (client, tasks) => {
 							}
 						});
 					}
-					status_string = `Completed @ ${time(new Date(), "R")}`;
+					status_string = `Completed @ ${time(new Date(), TimestampStyles.RelativeTime)}`;
 					color = "Green";
 				} else {
 					status_string = "Error. Host not initialised for queue.";

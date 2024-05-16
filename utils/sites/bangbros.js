@@ -1,8 +1,9 @@
 import * as cheerio from "cheerio";
-import { findProfile } from "../mongodb.js";
-import { createResponse, wait } from "../common_functions.js";
-
+import { EmbedBuilder, TimestampStyles, time } from "discord.js";
 import fs from "node:fs";
+import bbScenes from "../../models/bbScenes.js";
+import { createResponse, wait } from "../common_functions.js";
+import { findProfile } from "../mongodb.js";
 import pornportal from "./pornportal.js";
 
 const Scraper = async (link, network) => {
@@ -63,16 +64,27 @@ const Scraper = async (link, network) => {
 	}
 	else {
 		transformedLink = await pornportal.extractNumber(link);
-		const database = JSON.parse(await fs.promises.readFile(`./essentials/bbjs.json`, {encoding: "utf-8"}))
-		const results = database.filter(result => result.code.toLowerCase() === link.toLowerCase() || result.id == transformedLink);
-		if (results.length === 0) {
+		// const database = JSON.parse(await fs.promises.readFile(`./essentials/bbjs.json`, {encoding: "utf-8"}))
+		// const results = database.filter(result => result.code.toLowerCase() === link.toLowerCase() || result.id == transformedLink);
+		// if (results.length === 0) {
+		// 	throw new Error('Scene with this ID not found!');
+		// } else {
+		// 	transformedLink = results[0].url;
+		// 	scene_json.title = results[0].title.replace(/[^a-zA-Z0-9 ]/g, "");
+		// 	scene_json.image = results[0].image;
+		// 	scene_json.site = `Bangbros - ${results[0].site.name.replace(/[\\/:*?"<>|]/g, "")}`;
+		// 	scene_json.link = results[0].code;
+		// }
+		const scene = await bbScenes.findOne({code: link});
+		if (!scene) {
 			throw new Error('Scene with this ID not found!');
-		} else {
-			transformedLink = results[0].url;
-			scene_json.title = results[0].title.replace(/[^a-zA-Z0-9 ]/g, "");
-			scene_json.image = results[0].image;
-			scene_json.site = `Bangbros - ${results[0].site.name.replace(/[\\/:*?"<>|]/g, "")}`;
-			scene_json.link = results[0].code;
+		}
+		else {
+			transformedLink = scene.url;
+			scene_json.title = scene.title.replace(/[^a-zA-Z0-9 ]/g, "");
+			scene_json.image = scene.image;
+			scene_json.site = `Bangbros - ${scene.site.replace(/[\\/:*?"<>|]/g, "")}`;
+			scene_json.link = scene.code;
 		}
 	}
 	let $;
@@ -170,6 +182,9 @@ const dbGenerateBase = async (client) => {
 		try {
 			$("div[class = 'thmbHldr-in clearfix'] div[data-shoot]").each(function (i, e) {
 				const dataJson = JSON.parse(`${$(e).attr("data-shoot")}`)
+				const date_str = $(e).find("span.etl-dt").text().split("on").pop();
+				const dateAdded = new Date(date_str);
+				dataJson.date_added = dateAdded;
 				array.push(dataJson)
 			});
 		} catch (error) {
@@ -181,18 +196,18 @@ const dbGenerateBase = async (client) => {
 		if (!bot_profile) {
 			throw new Error('Bot Profile not found!');
 		}
-		const logsChannel = await client.channels.fetch(bot_profile.additional_details?.botChannelID);
+		const logsChannel = await client.channels.fetch(bot_profile.additional_details?.logChannelID);
 		const msg = await logsChannel.send(`Starting BB DB Update!`);
 		const bangbrosArray = bot_profile.connectionArray.filter(entry => (entry.description?.includes("bangbros ") && entry.description?.includes("dbgenerate")));
+		const old_database = JSON.parse(await fs.promises.readFile(`./essentials/bbjs.json`, {encoding: "utf-8"}));
 		const result = await looper(bangbrosArray);
 		const detailsElement = bangbrosArray[result.index];
 		await msg.edit({ content: `Total Sites - ${siteArray.length}`});
-		const oldDB = JSON.parse(await fs.promises.readFile(`./essentials/bbjs.json`, {encoding: "utf-8"}));
 
 		let mainArray = [];
 		for (let site = 0; site < siteArray.length; site++) {
 			const element = siteArray[site];
-			console.log(`Scraping Bangbros DB - ${element}`);
+			// console.log(`Scraping Bangbros DB - ${element}`);
 			await msg.edit({ content: `Scraping Bangbros DB ${site + 1} / ${siteArray.length} - ${element}`});
 			try{
 				const baseURL = `https://members.${detailsElement.domain}.com${element}/videos`
@@ -225,31 +240,72 @@ const dbGenerateBase = async (client) => {
 				console.error(error);
 			}
 		}
+
 		await fs.promises.writeFile(`./essentials/bbjs.json`, `${JSON.stringify(mainArray, null, "\t")}`, {encoding: "utf-8"});
-		const newDB = JSON.parse(await fs.promises.readFile(`./essentials/bbjs.json`, {encoding: "utf-8"}));
-		let detailString = "Stats\n";
-
-		for (let site = 0; site < siteArray.length; site++){
-			const element = siteArray[site];
-			const oldResults = oldDB.filter(result => result.url.includes(element));
-			const newResults = newDB.filter(result => result.url.includes(element));
-			if (newResults.length !== oldResults.length) {
-				detailString = `${detailString}${oldResults[0].site.name} - ${newResults.length - oldResults.length}\n`;
-			}
-		}
-		const prevIDs = new Set(oldDB.map(item => item.id));
-
-		// Filter out new entries
-		const newEntries = newDB.filter(entry => !prevIDs.has(entry.id));
-
-		// Convert newEntries to JSON
-		// const newJSONResult = JSON.stringify(newEntries, null, 4);
-
-		// console.log(newJSONResult);
+		await logsChannel.send({
+			files: [{
+				attachment: './essentials/bbjs.json',
+				name: `BBJSON ${(new Date()).toDateString()}.json`
+			}]
+		});
 		mainArray = [];
 		siteArray = [];
-		await msg.edit({ content: `Scraping Bangbros DB Finished`});
-		await logsChannel.send(detailString);
+		await msg.edit({ content: `Scraping Bangbros DB Finished, updating DB!`});
+		const new_database = JSON.parse(await fs.promises.readFile(`./essentials/bbjs.json`, {encoding: "utf-8"}));
+
+		const oldCodes = new Set(old_database.map(entry => entry.code));
+		const new_entries = new_database.filter(entry => !oldCodes.has(entry.code));
+
+		console.log(new_entries.length);
+
+		for (let index = 0; index < new_entries.length; index++) {
+			const data = new_database[index];
+			const scene = await bbScenes.findOne({"code": data.code});
+			if (!scene) {
+				await bbScenes.create({
+					code: data.code,
+					id: data.id,
+					image: data.image,
+					date_added: data.date_added,
+					title: data.title,
+					url: data.url,
+					site: data.site.name,
+					posted: false
+				})
+			}
+			if (index % 100 === 0) {
+				await msg.edit({ content: `${index + 1} out of ${new_database.length} inserted.`});
+			}
+		}
+		await msg.edit({ content: `Updating Bangbros DB Finished, Posting DB!`});
+		const scenes_post = await bbScenes.find({ posted: false }).sort({ date_added: 1 });
+		if (scenes_post.length !== 0) {
+			const bb_channel = await client.channels.fetch(bot_profile.additional_details?.bbChannelID);
+
+			for (let index = 0; index < scenes_post.length; index++) {
+				const scene = scenes_post[index];
+				const detailsEmbed = new EmbedBuilder()
+					.setColor('#00ffff')
+					.setTitle(`Bangbros - ${scene.site}`)
+					.setDescription(`${(scene.title).replace(/[^a-zA-Z0-9 ]/g, "")}`)
+					.addFields(
+						{ name: 'Scene Code', value: `${scene.code}`, inline: true },
+						{ name: 'Date Added', value: `${time(scene.date_added, TimestampStyles.LongDate)}`, inline: true },
+					)
+					.setImage(scene.image)
+					.setFooter({text: 'Stay Horny, Spread Horny!!', iconURL: 'https://i.imgur.com/htKfpMj.jpeg'});
+				await bb_channel.send({ embeds: [detailsEmbed] });
+				await bbScenes.findOneAndUpdate({code: scene.code}, {$set: {
+					posted: true
+				}});
+				await wait(500);
+				if (index % 10 === 0) {
+					await msg.edit({ content: `${index + 1} out of ${scenes_post.length} posted.`});
+				}
+			}	
+		}
+		await msg.edit({ content: `Finished!`});
+
 	} catch (error) {
 		console.log(error);
 	}

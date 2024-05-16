@@ -26,6 +26,8 @@ const userProfiles = new mongoose.Schema({
             givelink: {type: Number, require: false, unique: false}
         },
         botChannelID: { type: String, require: false, unique: false},
+        logChannelID: { type: String, require: false, unique: false},
+        bbChannelID: { type: String, require: false, unique: false},
         botBoosterPremium: { type: Boolean, require: false, unique: false},
     },
     
