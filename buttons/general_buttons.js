@@ -11,10 +11,10 @@ const guides = async (interaction) => {
 			.setLabel(`Guide Link`)
 			.setURL(`https://rentry.org/seremharem`)
 			.setStyle(ButtonStyle.Link),
-			new ButtonBuilder()
-			.setLabel(`Server Setup Link`)
-			.setURL(`https://rentry.org/seremharemserver`)
-			.setStyle(ButtonStyle.Link),
+			// new ButtonBuilder()
+			// .setLabel(`Server Setup Link`)
+			// .setURL(`https://rentry.org/seremharemserver`)
+			// .setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
 			.setLabel(`Supported Sites`)
 			.setURL(`https://rentry.org/seremharemsites`)
@@ -23,10 +23,10 @@ const guides = async (interaction) => {
 			.setLabel(`Hosts Specs`)
 			.setURL(`https://rentry.org/seremharemhosts`)
 			.setStyle(ButtonStyle.Link),
-			new ButtonBuilder()
-			.setLabel(`Shop`)
-			.setURL(`https://shoppy.gg/@Serem`)
-			.setStyle(ButtonStyle.Link)
+			// new ButtonBuilder()
+			// .setLabel(`Shop`)
+			// .setURL(`https://shoppy.gg/@Serem`)
+			// .setStyle(ButtonStyle.Link)
 		];
 
 		// Define the action row and embed for the response
