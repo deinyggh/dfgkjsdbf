@@ -285,7 +285,7 @@ const execute = async (interaction) => {
 					const description = submitted.fields.getTextInputValue('description');
 
 					const bot_profile = await findProfile({ "userID": interaction.client.user.id });
-					const check = bot_profile.connectionDetailArray?.find(detail => detail.siteName === site.trim());
+					const check = bot_profile.connectionDetailArray?.find(detail => detail.siteName === site_name.trim());
 					if (!check){
 						await updateData(interaction.client.user, { $push: {
 							connectionArray: {

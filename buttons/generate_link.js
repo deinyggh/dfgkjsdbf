@@ -10,6 +10,7 @@ import watch4beauty from "../utils/sites/watch4beauty.js";
 import wtfpass from "../utils/sites/wtfpass.js";
 import xart from "../utils/sites/xart.js";
 import { start_queue } from "../utils/task_queue.js";
+import tonightsgirlfriend from "../utils/sites/tonightsgirlfriend.js";
 
 const user_check = async (interaction) => {
 	const user_profile = await findProfile({userID: interaction.user.id});
@@ -156,6 +157,7 @@ const valid_network_check = async (link, host = "Direct Link") => {
 		"bangbros.com": "pornportal",
 		//naughtyamerica
 		"naughtyamerica.com": "naughtyamerica",
+		"tonightsgirlfriend.com": "tonightsgirlfriend",
 		//nadine-j.de
 		"nadine-j.de": "nadinej",
 		//pure_xxx
@@ -240,6 +242,9 @@ const generate_link_details = async (url, host = "Direct Link", network = "commo
 		break;
 		case "naughtyamerica":
 			scene_json = await naughtyamerica.Scraper(url);
+		break;
+		case "tonightsgirlfriend":
+			scene_json = await tonightsgirlfriend.Scraper(url);
 		break;
 		case "nadinej":
 			scene_json = await nadinej.Scraper(url);
