@@ -1,6 +1,6 @@
 import { ActivityType, Events } from 'discord.js';
 import mongoose from 'mongoose';
-import config from '../config.json' with { type: 'json' };
+// import config from '../config.json' with { type: 'json' };
 import fileSchema from "../models/fileSchema.js";
 import saSchema from "../models/saSchema.js";
 import { wait } from '../utils/common_functions.js';
@@ -89,9 +89,9 @@ export default {
 			status: 'online'
 		});
 
-		if(!config.DBURL) return;
+		if(!process.env.DBURL) return;
 		mongoose.set('strictQuery', true)
-		mongoose.connect(config.DBURL, {}).then(() => {
+		mongoose.connect(process.env.DBURL, {}).then(() => {
 			console.log("Bot connected to DB!")
 		}).catch((err) => {
 			console.log(err)
