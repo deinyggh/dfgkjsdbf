@@ -88,10 +88,10 @@ export default {
 			}],
 			status: 'online'
 		});
-
-		if(!process.env.DBURL) return;
+		const dburl = process.env.DBURL;
+		if(!dburl) return;
 		mongoose.set('strictQuery', true)
-		mongoose.connect(process.env.DBURL, {}).then(() => {
+		mongoose.connect(dburl, {}).then(() => {
 			console.log("Bot connected to DB!")
 		}).catch((err) => {
 			console.log(err)
