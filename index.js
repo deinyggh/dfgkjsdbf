@@ -44,5 +44,5 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-const token = process.env.TOKEN;
+const token = process.env['token'];
 client.login(token);

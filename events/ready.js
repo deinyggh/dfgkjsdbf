@@ -88,7 +88,7 @@ export default {
 			}],
 			status: 'online'
 		});
-		const dburl = process.env.DBURL;
+		const dburl = process.env['DBURL'];
 		if(!dburl) return;
 		mongoose.set('strictQuery', true)
 		mongoose.connect(dburl, {}).then(() => {
