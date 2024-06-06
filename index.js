@@ -45,6 +45,5 @@ for (const file of eventFiles) {
 	}
 }
 const token = process.env['token'];
-console.log(`token = ${token}`);
-keepAlive();
+keepAlive(client, token);
 client.login(token);
