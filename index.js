@@ -1,5 +1,4 @@
 import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
-// import config from "./config.json"  with { type: 'json' };
 import fs from "node:fs";
 import path from "node:path";
 import keepAlive from "./server.js";
@@ -45,6 +44,7 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-keepAlive();
 const token = process.env['token'];
+console.log(`token = ${token}`);
+keepAlive();
 client.login(token);
