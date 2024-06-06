@@ -1,11 +1,10 @@
 import express from "express";
 
 const server = express();
-const port = process.env.PORT || 3000;
 server.all('/', (req, res)=>{
-    res.send('Your code is well!')
+    res.send('Your code is alive!')
 })
 function keepAlive(){
-    server.listen(port, ()=>{console.log("I am Ready!")});
+    server.listen(3000, ()=>{console.log("Server is Ready!")});
 }
 export default keepAlive;
