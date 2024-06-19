@@ -69,7 +69,7 @@ export default {
 								});
 							}
 							//BB Update
-							await bangbros.dbGenerateBase(client);
+							// await bangbros.dbGenerateBase(client);
 
 						} catch (error) {
 							console.error(error);
