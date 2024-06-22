@@ -1,6 +1,6 @@
 import { ActivityType, Events } from 'discord.js';
 import mongoose from 'mongoose';
-import config from '../config.json' with { type: 'json' };
+// import config from '../config.json' with { type: 'json' };
 import fileSchema from "../models/fileSchema.js";
 import saSchema from "../models/saSchema.js";
 import { wait } from '../utils/common_functions.js';
@@ -42,32 +42,32 @@ export default {
 							});
 
 							//File Delete
-							// const filesToDelete = await fileSchema.find({fileDeleteTime : { $lt: new Date()}});
-							// for (let index = 0; index < filesToDelete.length; index++) {
-							// 	const file = filesToDelete[index];
-							// 	const service_account = JSON.parse((await saSchema.findOne({SaFile: file.SaFile})).SaJSON);
+							const filesToDelete = await fileSchema.find({fileDeleteTime : { $lt: new Date()}});
+							for (let index = 0; index < filesToDelete.length; index++) {
+								const file = filesToDelete[index];
+								const service_account = JSON.parse((await saSchema.findOne({SaFile: file.SaFile})).SaJSON);
 
-							// 	try {
-							// 		await fileSchema.findOneAndDelete({fileID: file.fileID});
-							// 		await deleteOneFile(service_account, file.fileID);
-							// 		await wait(1000)
-							// 	} catch(error) {
-							// 		console.log(error);
-							// 	}
-							// }
+								try {
+									await fileSchema.findOneAndDelete({fileID: file.fileID});
+									await deleteOneFile(service_account, file.fileID);
+									await wait(1000)
+								} catch(error) {
+									console.log(error);
+								}
+							}
 							//Storage Update
-							// const SAFiles = await saSchema.find({});
-							// for (let index = 0; index < SAFiles.length; index++) {
-							// 	const SaFile = SAFiles[index];
-							// 	const storage = await storageCheck(JSON.parse(SaFile.SaJSON));
-							// 	await saSchema.findOneAndUpdate({SaFile: SaFile.SaFile, guildID: SaFile.guildID}, {
-							// 		$set: {
-							// 				storageUsed: parseInt(storage.usage),
-							// 				storageLimit: parseInt(storage.limit),
-							// 				storageFree: parseInt(storage.limit) - parseInt(storage.usage)
-							// 		}
-							// 	});
-							// }
+							const SAFiles = await saSchema.find({});
+							for (let index = 0; index < SAFiles.length; index++) {
+								const SaFile = SAFiles[index];
+								const storage = await storageCheck(JSON.parse(SaFile.SaJSON));
+								await saSchema.findOneAndUpdate({SaFile: SaFile.SaFile, guildID: SaFile.guildID}, {
+									$set: {
+											storageUsed: parseInt(storage.usage),
+											storageLimit: parseInt(storage.limit),
+											storageFree: parseInt(storage.limit) - parseInt(storage.usage)
+									}
+								});
+							}
 							//BB Update
 							// await bangbros.dbGenerateBase(client);
 
@@ -88,10 +88,10 @@ export default {
 			}],
 			status: 'online'
 		});
-
-		if(!config.DBURL) return;
+		const dburl = process.env['DBURL'];
+		if(!dburl) return;
 		mongoose.set('strictQuery', true)
-		mongoose.connect(config.DBURL, {}).then(() => {
+		mongoose.connect(dburl, {}).then(() => {
 			console.log("Bot connected to DB!")
 		}).catch((err) => {
 			console.log(err)
@@ -99,7 +99,7 @@ export default {
 		});
 
 		// start_queue(client, "ready");
-		dailyReset(client);
+		// dailyReset(client);
 
 	},
 };
