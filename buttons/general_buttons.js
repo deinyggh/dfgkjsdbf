@@ -50,16 +50,19 @@ const guides = async (interaction) => {
 const banbros_directory = async (interaction) => {
 	try {
 		await interaction.deferReply({ephemeral: true});
-		const bot_profile = await findProfile({ 'connectionArray.siteName': "bangbros1" });
+		// const bot_profile = await findProfile({ 'connectionArray.siteName': "bangbros1" });
+		const url = "https://botbb.azulium.workers.dev"
 		const buttons = [
 			new ButtonBuilder()
 			.setLabel(`Directory`)
-			.setURL(`${bot_profile.additional_details.bbDirectory}/product/1/videos`)
+			// .setURL(`${bot_profile.additional_details.bbDirectory}/product/1/videos`)
+			.setURL(`${url}/product/1/videos`)
 			.setStyle(ButtonStyle.Link),
 			
 			new ButtonBuilder()
 			.setLabel(`Search`)
-			.setURL(`${bot_profile.additional_details.bbDirectory}/product/1/search`)
+			// .setURL(`${bot_profile.additional_details.bbDirectory}/product/1/search`)
+			.setURL(`${url}/product/1/search`)
 			.setStyle(ButtonStyle.Link),
 
 		];
