@@ -1,5 +1,5 @@
 import { Collection, Events } from "discord.js";
-import { guides, host_setting, host_update } from "../buttons/general_buttons.js";
+import { banbros_directory, guides, host_setting, host_update } from "../buttons/general_buttons.js";
 import { generate_link } from "../buttons/generate_link.js";
 
 const interactionCreate = async (interaction) => {
@@ -63,6 +63,12 @@ const interactionCreate = async (interaction) => {
 				case "host_setting":
 					{
 						await host_setting(interaction);
+					}
+				break;
+
+				case "bangbros_directory":
+					{
+						await banbros_directory(interaction);
 					}
 				break;
 	
