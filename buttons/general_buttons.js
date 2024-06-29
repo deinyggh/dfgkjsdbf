@@ -47,6 +47,41 @@ const guides = async (interaction) => {
 	}
 }
 
+const banbros_directory = async (interaction) => {
+	try {
+		await interaction.deferReply({ephemeral: true});
+		const bot_profile = await findProfile({ 'connectionArray.siteName': "bangbros1" });
+		const buttons = [
+			new ButtonBuilder()
+			.setLabel(`Directory`)
+			.setURL(`${bot_profile.additional_details.bbDirectory}/product/1/videos`)
+			.setStyle(ButtonStyle.Link),
+			
+			new ButtonBuilder()
+			.setLabel(`Search`)
+			.setURL(`${bot_profile.additional_details.bbDirectory}/product/1/search`)
+			.setStyle(ButtonStyle.Link),
+
+		];
+
+		// Define the action row and embed for the response
+		const actionRow = new ActionRowBuilder().addComponents(buttons);
+		const embed = new EmbedBuilder()
+			.setTitle(`Bangbros Links`)
+			.setColor("Random");
+
+		// Send the response
+		await interaction.editReply({ embeds: [embed], components: [actionRow] });
+	} catch (error) {
+		console.log(error);
+		try{
+			await interaction.reply({ content: 'Check logs for error! Please try again!'});
+		}
+		catch{}
+		return;
+	}
+}
+
 const host_setting = async (interaction) => {
 	await interaction.deferReply({ephemeral: true});
 	try {
@@ -406,6 +441,7 @@ const host_update = async (interaction) => {
 
 
 export {
+	banbros_directory,
 	guides,
 	host_setting,
 	host_update
