@@ -1,4 +1,4 @@
-import { Collection, Events } from "discord.js";
+import { Collection, Events, EmbedBuilder } from "discord.js";
 import { banbros_directory, guides, host_setting, host_update } from "../buttons/general_buttons.js";
 import { generate_link } from "../buttons/generate_link.js";
 
