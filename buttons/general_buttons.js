@@ -51,7 +51,7 @@ const banbros_directory = async (interaction) => {
 	try {
 		await interaction.deferReply({ephemeral: true});
 		// const bot_profile = await findProfile({ 'connectionArray.siteName': "bangbros1" });
-		const url = "https://botbb.azulium.workers.dev"
+		const url = "https://google.com"
 		const buttons = [
 			new ButtonBuilder()
 			.setLabel(`Directory`)
